@@ -1,4 +1,4 @@
-# tridarma-nextgen
+# tridharma-nextgen
 Kode ini mensimulasikan aliran data dalam sistem Tridharma Perguruan Tinggi, menghitung metrik, memvisualisasikan hasilnya, dan memberikan analisis.
 Nilai awal dari 'Supply'  (Pendidikan, Penelitian, Pengabdian) mengalir melalui sistem, menghasilkan 'Output',  memenuhi 'Demand', dan memicu 'Kolaborasi' serta 'Rekognisi'.  Terdapat feedback loop di mana kolaborasi dan kapasitas kembali memperkuat pilar supply,  menciptakan siklus yang dinamis. Sebelum anda mulai masuk ke dalam kode ini, ada baiknya anda membaca file PDF berjudul :"Tridharma NextGen Perguruan Tinggi yang Berdampak"
 ---Ferry Astika S---
