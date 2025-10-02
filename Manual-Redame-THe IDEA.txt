@@ -10,52 +10,37 @@ Pengaruh pembobotan (weight) dalam simulasi ini adalah elemen yang paling fundam
 Secara sederhana, pembobotan adalah "aturan main" dari keseluruhan sistem. Angka-angka weight yang  lihat pada setiap panah (edge) menentukan seberapa kuat dan seberapa cepat pengaruh dari satu node mengalir ke node lainnya. Jika kita ibaratkan sistem ini sebagai jaringan pipa air, maka weight adalah ukuran diameter pipa tersebut.
 
 Mari kita bedah pengaruhnya berdasarkan fungsi dalam kode :
-
 1. Menentukan Kekuatan Aliran (Amplifier vs. Reducer)
 Bobot menentukan seberapa besar "output" dari satu node akan mempengaruhi "input" di node berikutnya.
 
-Bobot Tinggi (misal, > 0.5): Menandakan pengaruh yang sangat kuat. Perubahan kecil pada node sumber akan menyebabkan perubahan besar pada node tujuan.
-
+1) Bobot Tinggi (misal, > 0.5): Menandakan pengaruh yang sangat kuat. Perubahan kecil pada node sumber akan menyebabkan perubahan besar pada node tujuan.
 Contoh di Kode: ("DUDI", "COL", {"weight": 0.60}). Ini artinya, permintaan dari Industri (DUDI) adalah pendorong utama dan paling kuat untuk meningkatkan Kinerja Kolaborasi (COL).
-
 Contoh lain: ("REC", "ALIGN", {"weight": 0.8}). Model ini mengasumsikan bahwa Rekognisi memiliki pengaruh yang sangat besar dalam menciptakan Keselarasan Insentif (ALIGN).
 
-Bobot Rendah (misal, < 0.3): Menandakan pengaruh yang lebih lemah. Dibutuhkan perubahan yang sangat besar di node sumber untuk bisa memberikan dampak yang signifikan pada node tujuan.
-
+2) Bobot Rendah (misal, < 0.3): Menandakan pengaruh yang lebih lemah. Dibutuhkan perubahan yang sangat besar di node sumber untuk bisa memberikan dampak yang signifikan pada node tujuan.
 Contoh di Kode: ("Proto", "DUDI", {"weight": 0.15}). Ini memodelkan bahwa meskipun Prototipe penting, pengaruh langsungnya untuk meningkatkan permintaan DUDI tidak sebesar pengaruh Kompetensi Lulusan (CGrad ke DUDI punya bobot 0.55).
 
 2. Mendistribusikan Pengaruh
 Ketika satu node mempengaruhi beberapa node lain, bobot menentukan bagaimana pengaruh itu "dibagi".
-
 Contoh di Kode: Lihat bagaimana node COL (Kolaborasi) memberikan umpan balik (feedback) ke tiga pilar utama:
 
 ("COL", "P1", {"weight": 0.33})
-
 ("COL", "P2", {"weight": 0.33})
-
 ("COL", "P3", {"weight": 0.33})
 Bobot yang hampir sama (0.33) menunjukkan asumsi bahwa manfaat dari kolaborasi didistribusikan secara merata ke pilar Pendidikan, Penelitian, dan Pengabdian.
-
 Skenario "What-If": Jika  mengubah bobot ini menjadi P1: 0.1, P2: 0.6, P3: 0.3,  sedang memodelkan sebuah skenario di mana "Kolaborasi lebih banyak menguntungkan pilar Penelitian daripada Pendidikan dan Pengabdian".
 
 3. Menciptakan Hubungan Positif dan Negatif
-Ini adalah salah satu aspek paling kuat dari model ini.
-
-Bobot Positif (weight > 0): Menciptakan reinforcing loop (siklus penguatan). Semakin besar nilai node A, semakin besar pula nilai node B.
-
+Ini adalah salah satu aspek terkuat dari model ini.
+1) Bobot Positif (weight > 0): Menciptakan reinforcing loop (siklus penguatan). Semakin besar nilai node A, semakin besar pula nilai node B.
 Contoh di Kode: Siklus REC → CAREER → CAP → P1/P2/P3. Rekognisi yang baik (REC) meningkatkan karier (CAREER), yang menambah kapasitas (CAP), yang akhirnya memperkuat kembali pilar-pilar utama (P1, P2, P3). Ini adalah siklus positif yang membuat sistem bertumbuh.
-
-Bobot Negatif (weight < 0): Menciptakan balancing loop (siklus penyeimbang/penghambat). Semakin besar nilai node A, justru semakin kecil nilai node B.
-
+2) Bobot Negatif (weight < 0): Menciptakan balancing loop (siklus penyeimbang/penghambat). Semakin besar nilai node A, justru semakin kecil nilai node B.
 Contoh di Kode: ("ADMIN", "CAP", {"weight": -0.5}). Ini adalah model matematis dari pernyataan: "Semakin tinggi Beban Administratif, semakin rendah Kapasitas (waktu & sumber daya) yang tersedia". Tanda negatif inilah yang membuat nilai CAP bisa berkurang jika nilai ADMIN tinggi.
 
 Kesimpulan: Apa Artinya  ?
 Pembobotan adalah cara  menerjemahkan asumsi, hipotesis, dan prioritas strategis ke dalam model matematis. Dengan mengubah nilai bobot,  bisa melakukan analisis skenario untuk menjawab pertanyaan seperti:
-
-"Apa yang terjadi jika kita berhasil membuat program magang yang lebih baik, sehingga pengaruh lulusan terhadap industri meningkat?" (→ Naikkan bobot CGrad ke DUDI).
-
-"Bagaimana dampaknya jika kita menyederhanakan birokrasi, sehingga efek negatifnya berkurang setengahnya?" (→ Ubah bobot ADMIN ke CAP dari -0.5 menjadi -0.25).
-
-"Manakah yang lebih efektif: meningkatkan pendanaan untuk penelitian atau memperkuat jejaring dengan pemerintah?" (→ Bandingkan hasil simulasi dengan menaikkan nilai awal P2 vs. menaikkan bobot dari PUB ke COL).
+1. "Apa yang terjadi jika kita berhasil membuat program magang yang lebih baik, sehingga pengaruh lulusan terhadap industri meningkat?" (→ Naikkan bobot CGrad ke DUDI).
+2. "Bagaimana dampaknya jika kita menyederhanakan birokrasi, sehingga efek negatifnya berkurang setengahnya?" (→ Ubah bobot ADMIN ke CAP dari -0.5 menjadi -0.25).
+3. "Manakah yang lebih efektif: meningkatkan pendanaan untuk penelitian atau memperkuat jejaring dengan pemerintah?" (→ Bandingkan hasil simulasi dengan menaikkan nilai awal P2 vs. menaikkan bobot dari PUB ke COL).
 
 Jadi, pembobotan bukan sekadar angka, melainkan inti dari logika dan dinamika sistem yang  bangun. Mengubahnya akan secara fundamental mengubah perilaku dan hasil akhir dari simulasi.
